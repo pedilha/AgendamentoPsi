@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: agendamento
+  datasource:
+    url: jdbc:postgresql://localhost:5433/agendamento
+    username: postgres
+    password: 130303
+    driver-class-name: org.postgresql.Driver
