@@ -4,11 +4,16 @@ import com.pedro.agendamento.entity.Disponibilidade;
 import com.pedro.agendamento.entity.Psicologo;
 import com.pedro.agendamento.repository.DisponibilidadeRepository;
 import com.pedro.agendamento.repository.PsicologoRepository;
+import com.pedro.agendamento.service.DisponibilidadeService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 import java.util.List;
 
 @Controller
@@ -16,11 +21,14 @@ public class DisponibilidadeController {
 
     private final DisponibilidadeRepository disponibilidadeRepository;
     private final PsicologoRepository psicologoRepository;
+    private final DisponibilidadeService disponibilidadeService;
 
     public DisponibilidadeController(DisponibilidadeRepository disponibilidadeRepository,
-                                      PsicologoRepository psicologoRepository) {
+                                      PsicologoRepository psicologoRepository,
+                                      DisponibilidadeService disponibilidadeService) {
         this.disponibilidadeRepository = disponibilidadeRepository;
         this.psicologoRepository = psicologoRepository;
+        this.disponibilidadeService = disponibilidadeService;
     }
 
     @GetMapping("/psicologo/disponibilidade")
@@ -33,5 +41,25 @@ public class DisponibilidadeController {
 
         model.addAttribute("disponibilidades", disponibilidades);
         return "disponibilidade-lista";
+    }
+
+    @GetMapping("/psicologo/disponibilidade/nova")
+    public String formulario() {
+        return "disponibilidade-form";
+    }
+
+    @PostMapping("/psicologo/disponibilidade/nova")
+    public String cadastrar(Authentication authentication,
+                             @RequestParam DayOfWeek diaSemana,
+                             @RequestParam LocalTime horaInicio,
+                             @RequestParam LocalTime horaFim) {
+
+        String email = authentication.getName();
+        Psicologo psicologo = psicologoRepository.findByUsuarioEmail(email)
+                .orElseThrow(() -> new IllegalStateException("Psicólogo não encontrado para: " + email));
+
+        disponibilidadeService.cadastrar(psicologo, diaSemana, horaInicio, horaFim);
+
+        return "redirect:/psicologo/disponibilidade";
     }
 }

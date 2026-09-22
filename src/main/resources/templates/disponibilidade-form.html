@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nova Disponibilidade</title>
+</head>
+<body>
+    <h1>Nova Disponibilidade</h1>
+
+    <form th:action="@{/psicologo/disponibilidade/nova}" method="post">
+
+        <label>Dia da semana:</label>
+        <select name="diaSemana">
+            <option value="MONDAY">Segunda</option>
+            <option value="TUESDAY">Terça</option>
+            <option value="WEDNESDAY">Quarta</option>
+            <option value="THURSDAY">Quinta</option>
+            <option value="FRIDAY">Sexta</option>
+            <option value="SATURDAY">Sábado</option>
+            <option value="SUNDAY">Domingo</option>
+        </select>
+
+        <label>Hora início:</label>
+        <input type="time" name="horaInicio" required>
+
+        <label>Hora fim:</label>
+        <input type="time" name="horaFim" required>
+
+        <button type="submit">Salvar</button>
+    </form>
+</body>
+</html>
