@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Minhas Disponibilidades</title>
+</head>
+<body>
+    <h1>Minhas Disponibilidades</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Dia da Semana</th>
+                <th>Início</th>
+                <th>Fim</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="d : ${disponibilidades}">
+                <td th:text="${d.diaSemana}"></td>
+                <td th:text="${d.horaInicio}"></td>
+                <td th:text="${d.horaFim}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p th:if="${disponibilidades.isEmpty()}">Nenhuma disponibilidade cadastrada ainda.</p>
+</body>
+</html>
