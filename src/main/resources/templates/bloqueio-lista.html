@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Meus Bloqueios</title>
+</head>
+<body>
+    <h1>Meus Bloqueios</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Início</th>
+                <th>Fim</th>
+                <th>Motivo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="b : ${bloqueios}">
+                <td th:text="${b.data}"></td>
+                <td th:text="${b.horaInicio}"></td>
+                <td th:text="${b.horaFim}"></td>
+                <td th:text="${b.motivo}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p th:if="${bloqueios.isEmpty()}">Nenhum bloqueio cadastrado ainda.</p>
+</body>
+</html>
