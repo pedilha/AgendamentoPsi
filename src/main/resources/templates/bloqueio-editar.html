@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Bloqueio</title>
+</head>
+<body>
+    <h1>Editar Bloqueio</h1>
+
+    <form th:action="@{/psicologo/bloqueio/{id}/editar(id=${bloqueio.id})}" method="post">
+
+        <label>Data:</label>
+        <input type="date" name="data" th:value="${bloqueio.data}" required>
+
+        <label>Hora início:</label>
+        <input type="time" name="horaInicio" th:value="${bloqueio.horaInicio}" required>
+
+        <label>Hora fim:</label>
+        <input type="time" name="horaFim" th:value="${bloqueio.horaFim}" required>
+
+        <label>Motivo:</label>
+        <input type="text" name="motivo" th:value="${bloqueio.motivo}" required>
+
+        <button type="submit">Salvar alterações</button>
+    </form>
+</body>
+</html>

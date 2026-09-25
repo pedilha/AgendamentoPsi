@@ -34,6 +34,13 @@ public class Disponibilidade {
         this.horaInicio = horaInicio;
         this.horaFim = horaFim;
     }
+    public Disponibilidade(Long id, Psicologo psicologo, DayOfWeek diaSemana, LocalTime horaInicio, LocalTime horaFim) {
+        this.id = id;
+        this.psicologo = psicologo;
+        this.diaSemana = diaSemana;
+        this.horaInicio = horaInicio;
+        this.horaFim = horaFim;
+    }
 
     public Long getId() { return id; }
     public Psicologo getPsicologo() { return psicologo; }

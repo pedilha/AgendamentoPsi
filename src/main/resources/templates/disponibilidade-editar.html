@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Disponibilidade</title>
+</head>
+<body>
+    <h1>Editar Disponibilidade</h1>
+
+    <form th:action="@{/psicologo/disponibilidade/{id}/editar(id=${disponibilidade.id})}" method="post">
+
+        <label>Dia da semana:</label>
+        <select name="diaSemana">
+            <option value="MONDAY" th:selected="${disponibilidade.diaSemana.name() == 'MONDAY'}">Segunda</option>
+            <option value="TUESDAY" th:selected="${disponibilidade.diaSemana.name() == 'TUESDAY'}">Terça</option>
+            <option value="WEDNESDAY" th:selected="${disponibilidade.diaSemana.name() == 'WEDNESDAY'}">Quarta</option>
+            <option value="THURSDAY" th:selected="${disponibilidade.diaSemana.name() == 'THURSDAY'}">Quinta</option>
+            <option value="FRIDAY" th:selected="${disponibilidade.diaSemana.name() == 'FRIDAY'}">Sexta</option>
+            <option value="SATURDAY" th:selected="${disponibilidade.diaSemana.name() == 'SATURDAY'}">Sábado</option>
+            <option value="SUNDAY" th:selected="${disponibilidade.diaSemana.name() == 'SUNDAY'}">Domingo</option>
+        </select>
+
+        <label>Hora início:</label>
+        <input type="time" name="horaInicio" th:value="${disponibilidade.horaInicio}" required>
+
+        <label>Hora fim:</label>
+        <input type="time" name="horaFim" th:value="${disponibilidade.horaFim}" required>
+
+        <button type="submit">Salvar alterações</button>
+    </form>
+</body>
+</html>

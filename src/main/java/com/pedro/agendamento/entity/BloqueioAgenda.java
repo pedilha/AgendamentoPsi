@@ -39,6 +39,15 @@ public class BloqueioAgenda {
         this.motivo = motivo;
     }
 
+    public BloqueioAgenda(Long id, Psicologo psicologo, LocalDate data, LocalTime horaInicio, LocalTime horaFim, String motivo) {
+        this.id = id;
+        this.psicologo = psicologo;
+        this.data = data;
+        this.horaInicio = horaInicio;
+        this.horaFim = horaFim;
+        this.motivo = motivo;
+    }
+
     public Long getId() { return id; }
     public Psicologo getPsicologo() { return psicologo; }
     public LocalDate getData() { return data; }

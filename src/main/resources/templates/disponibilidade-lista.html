@@ -13,6 +13,7 @@
                 <th>Dia da Semana</th>
                 <th>Início</th>
                 <th>Fim</th>
+                <th>Ações</th>
             </tr>
         </thead>
         <tbody>
@@ -20,6 +21,13 @@
                 <td th:text="${d.diaSemana}"></td>
                 <td th:text="${d.horaInicio}"></td>
                 <td th:text="${d.horaFim}"></td>
+                <td>
+                    <a th:href="@{/psicologo/disponibilidade/{id}/editar(id=${d.id})}">Editar</a>
+                    <form th:action="@{/psicologo/disponibilidade/{id}/excluir(id=${d.id})}" method="post" style="display:inline">
+                        <button type="submit">Excluir</button>
+                    </form>
+                </td>
+                
             </tr>
         </tbody>
     </table>
