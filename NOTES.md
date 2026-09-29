@@ -62,3 +62,31 @@ Decisões e porquês, registrados fase a fase. Vira insumo do README final (Fase
 - Se o Maven disser "Nothing to compile" e o comportamento não mudou: o arquivo
   provavelmente não foi salvo de fato no editor antes de rodar. Confirmar salvamento
   (Ctrl+S) antes de rodar, ou usar `mvn clean spring-boot:run` pra forçar.
+
+  ## Fase 4 (completa) — Motor de cálculo de slots
+- `SlotService`: cruza três fontes pra calcular horários livres — `Disponibilidade`
+  (expediente recorrente do dia da semana), `BloqueioAgenda` (exceção pontual da
+  data), `Agendamento` (já ocupado na data). Sem Repository próprio — só orquestra
+  os três Repositories existentes.
+- Algoritmo em 3 passos: (1) busca disponibilidade do dia da semana e gera slots
+  candidatos fatiando o expediente pela duração da consulta, em loop `while`
+  (`atual.plusMinutes(duracao)` até ultrapassar o fim do expediente); (2) filtra
+  removendo colisão com bloqueio da data específica; (3) filtra removendo colisão
+  com agendamento existente na data. Os dois filtros usam a mesma fórmula de
+  sobreposição de intervalo já usada nas validações de cadastro da Fase 3
+  (`inicioA < fimB E inicioB < fimA`) — só que comparando slot candidato contra
+  cadastro existente, não cadastro contra cadastro.
+- Padrão "buscar X do dia" repetido três vezes (disponibilidade por dia da semana,
+  bloqueio por data, agendamento por data) — mesma estrutura, filtro que muda.
+- `Agendamento.dataHora` é `LocalDateTime` (data+hora juntos) — precisa de
+  `.toLocalDate()` pra filtrar por dia e `.toLocalTime()` pra comparar horário,
+  diferente de `BloqueioAgenda` que já guarda data e hora em campos separados.
+- Testado via `SlotDebugController` (`@RestController`, endpoint `/debug/slots`,
+  temporário) — **remover antes do deploy (Fase 10)**, expõe cálculo interno sem
+  finalidade nenhuma pro usuário final. Teste real: cadastrado bloqueio e
+  agendamento de teste (paciente inserido manualmente via SQL, já que cadastro de
+  paciente é Fase 5) numa mesma data, confirmado que os dois filtros removem os
+  slots certos e preservam os demais.
+- Motor só calcula — não reserva nada. Reserva de fato (criar `Agendamento` a
+  partir de um slot escolhido) é Fase 5, incluindo tratamento de concorrência
+  (dois pacientes tentando o mesmo horário ao mesmo tempo).
