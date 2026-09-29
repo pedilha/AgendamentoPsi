@@ -39,22 +39,22 @@ Decisões e porquês, registrados fase a fase. Vira insumo do README final (Fase
   Lição: sempre que um Usuario nasce com role PSICOLOGO/PACIENTE, a entidade associada
   precisa nascer junto, na mesma operação.
 
-## Fase 3 — Disponibilidade (completa)
-- Controller usa `Authentication.getName()` pra pegar o email da sessão ativa,
-  e a partir dele busca o Psicologo (`findByUsuarioEmail`) — é assim que toda tela
-  autenticada vai descobrir "quem está logado".
-- Camada Service criada (`DisponibilidadeService`) pra hospedar regra de negócio —
-  Controller não deve conter lógica de validação, só orquestrar requisição/resposta.
-- Validação de sobreposição de horário: fórmula `inicioA < fimB E inicioB < fimA`,
-  clássica pra checar colisão de dois intervalos de tempo. Mesma lógica que vai
-  aparecer de novo, mais complexa, no motor de slots (Fase 4).
-- `@RequestParam` em campos individuais no controller, não a entidade inteira como
-  parâmetro — decisão consistente com "sem setters nas entidades" (Fase 1): permitir
-  bind direto do formulário pra entidade exigiria setters, reabrindo a porta que
-  fechamos de propósito.
-- Pendência de polish (não bloqueia): erro de validação hoje estoura 500 genérico
-  em vez de voltar pro formulário com mensagem amigável. Resolver junto com padrão
-  parecido que vai aparecer na Fase 5.
+## Fase 3 (completa) — Disponibilidade e BloqueioAgenda
+- CRUD completo nas duas entidades: criar, listar, editar, excluir.
+- Padrão de edição sem setters: cada entidade ganhou um segundo construtor
+  aceitando `id` como parâmetro, usado só para reconstrução ao atualizar.
+  `Service.atualizar()` sempre monta um objeto novo com esse construtor e
+  chama `save()` — nunca muta o objeto existente. Mantém a regra "sem setters"
+  da Fase 1 mesmo em operações de update.
+- Verificação de posse obrigatória em toda operação de update/delete: compara
+  `entidade.getPsicologo().getId()` com o `id` do psicólogo autenticado antes
+  de agir. Sem isso, qualquer usuário logado poderia editar/excluir dados de
+  outra psicóloga só adivinhando o id na URL. Esse padrão vai se repetir em
+  `Agendamento` na Fase 5 — não esquecer lá.
+- `@PathVariable` para capturar id na URL (`/recurso/{id}/acao`), diferente de
+  `@RequestParam` (campos de formulário). Erro comum: confundir os dois.
+- Botão de excluir sempre via `<form method="post">`, nunca `<a href>` — a
+  rota é POST, link sempre faria GET e devolveria 405.
 
 ## Troubleshooting recorrente (pra não repetir)
 - Depois de reiniciar o PC, sempre `docker ps` antes de `mvn spring-boot:run` — 
