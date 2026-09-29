@@ -90,3 +90,8 @@ Decisões e porquês, registrados fase a fase. Vira insumo do README final (Fase
 - Motor só calcula — não reserva nada. Reserva de fato (criar `Agendamento` a
   partir de um slot escolhido) é Fase 5, incluindo tratamento de concorrência
   (dois pacientes tentando o mesmo horário ao mesmo tempo).
+- Testes unitários (`SlotServiceTest`, JUnit + Mockito): 4 cenários — slots sem
+  bloqueio/agendamento, remoção por bloqueio, remoção por agendamento, dia sem
+  disponibilidade (lista vazia, sem quebrar). Repositories mockados com
+  `mock(Interface.class)` + `when(...).thenReturn(...)` — não sobe Spring nem
+  toca o banco real, testa só a lógica do Service isolada. `mvn test` roda tudo.
